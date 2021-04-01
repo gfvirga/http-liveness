@@ -3,37 +3,71 @@ import socket
 import argparse
 from collections import defaultdict
 import re
+import time
+import json
 
-def main( website, alias ):
-    ip = socket.gethostbyname(website) 
+# Main function
+def main( website, alias, wait, quiet, output, method, timeout, count ):
+    # Initiate variables
     responses = defaultdict(int)
     counter = 0
+    # Infinite Loop
     while True:
-        counter += 1
         try:
+            # Counter fun
+            if count == 0:
+                raise
+            elif count > 0:
+                count -= 1
+            counter += 1
+
+            # Cleanup URL to Hosts
             url = re.compile(r"https?://(www\.)?")
             host = url.sub('', website).strip().strip('/')
-            ip = socket.gethostbyname_ex(host)
-            ip = str(ip[0] if alias else ip[2])
-            r =requests.get(website,timeout=1)
-            print(f"Check {website} ({ip}) response: {str(r.status_code)}")
+            # Get host information to display IP or CNAME
+            host = socket.gethostbyname_ex(host)
+            host = str(host[0] if alias else host[2])
+            # HTTP Requests
+            if method == "head":
+                r =requests.head(website,timeout=timeout)
+            elif method == "get":
+                r =requests.get(website,timeout=timeout)
+            # Output or not
+            if not quiet:
+                print(f"Check {website} ({host}) response: {str(r.status_code)}")
             responses[r.status_code] += 1
+        # Output timeouts or not    
         except requests.exceptions.Timeout:
             responses["timeout"] += 1
-            print(f"Request timeout for {ip} {counter}")
+            if not quiet:
+                print(f"Request timeout for {host} {counter}")
+        # Outputs in Text or JSON
         except:
-            print(f"\n --- {website} HTTP requests statistics ---")
-            output = f"{counter} HTTP requested"
-            for k in responses.keys():
-                output += f", {str(responses[k])} {str(k)} responses"
-            print(output)
+            if (output == "text"):
+                print(f"\n --- {website} HTTP requests statistics ---")
+                output = f"{counter} HTTP requested"
+                for k in responses.keys():
+                    output += f", {str(responses[k])} {str(k)} responses"
+                print(output)
+            elif (output == "json"):
+                responses["counter"] = counter
+                output = json.dumps(responses, indent = 4)  
+                print(output)
             break
+        # Added waittime - Slow requests
+        time.sleep(wait)
 
-
-# Parser
+# Parse all the things
 parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('host', metavar='https://www.example.com')
-parser.add_argument('-a', '--alias', action='store', type=bool, nargs='?', const=True, default=False, help="Returns IP or Alias")
+parser.add_argument('host', help='Enter URL with the patter - http(s)://<website>' )
+parser.add_argument('-a', '--alias', action='store', type=bool, nargs='?', const=True, default=False, help="Displays IP or Alias (CNAME)")
+parser.add_argument('-c', '--count', action='store', type=int, default=0, help="count")
+parser.add_argument('-m', '--method', action='store', type=str, default="head", help="HTTP method [get or head]")
+parser.add_argument('-o', '--output', action='store', type=str, default="text", help="Output [text|json]")
+parser.add_argument('-q', '--quiet', action='store', type=bool, nargs='?', const=True, default=False, help="Reduced Verbosity")
+parser.add_argument('-t', '--timeout', action='store', type=int, default=1, help="HTTP request timeout")
+parser.add_argument('-w', '--wait', action='store', type=float, default=0, help="waittime")
+
 args = parser.parse_args()
 
-main( args.host, args.alias )
+main( args.host, args.alias , args.wait, args.quiet, args.output, args.method, args.timeout, args.count )
