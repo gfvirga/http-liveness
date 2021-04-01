@@ -5,6 +5,9 @@ jobs:
   build:
     name: Build image
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gfvirga/httpliveness
+      IMAGE_TAGS: latest ${{ github.sha }}
 
     steps:
     - uses: actions/checkout@v2
@@ -12,7 +15,20 @@ jobs:
     - name: Buildah Action
       uses: redhat-actions/buildah-build@v2
       with:
-        image: my-new-image
-        tags: latest ${{ github.sha }}
+        image: ${{ env.IMAGE_NAME }}
+        tags: ${{ env.IMAGE_TAGS }}
         dockerfiles: |
           ./Dockerfile
+          
+    - name: Push To Quay
+      id: push-to-quay
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: "https://index.docker.io/v1/"
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+
+    - name: Use the image
+      run: echo "New image has been pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
