@@ -1,7 +1,7 @@
 # http-liveness
 Probe your web app and get its statistics
 
-It looks like cURL on purpose!
+It looks like `ping` on purpose!
 
 ## Objective
 I created this tool to quickily test the uptime of my deployments. This is a great tool to be used while testing downtime for DR failovers, pod rollouts, HA system upgrade, Load Balancers and more.
