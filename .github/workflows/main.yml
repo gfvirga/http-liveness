@@ -22,7 +22,7 @@ jobs:
           ./Dockerfile
           
     - name: Push To Dockerhub
-      id: push-to-Dockerhub
+      id: push-to-dockerhub
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
@@ -32,4 +32,4 @@ jobs:
         password: ${{ secrets.DOCKER_TOKEN }}
 
     - name: Use the image
-      run: echo "New image has been pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+      run: echo "New image has been pushed to ${{ steps.push-to-dockerhub.outputs.registry-paths }}"
