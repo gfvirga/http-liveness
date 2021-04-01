@@ -36,6 +36,8 @@ def main( website, alias, wait, quiet, output, method, timeout, count ):
             if not quiet:
                 print(f"Check {website} ({host}) response: {str(r.status_code)}")
             responses[r.status_code] += 1
+            # Added waittime - Slow requests
+            time.sleep(wait)
         # Output timeouts or not    
         except requests.exceptions.Timeout:
             responses["timeout"] += 1
@@ -54,8 +56,6 @@ def main( website, alias, wait, quiet, output, method, timeout, count ):
                 output = json.dumps(responses, indent = 4)  
                 print(output)
             break
-        # Added waittime - Slow requests
-        time.sleep(wait)
 
 # Parse all the things
 parser = argparse.ArgumentParser(description='Process some integers.')
