@@ -3,10 +3,24 @@ Probe your web app and get its statistics
 
 It looks like cURL on purpose!
 
-# Objective
+## Objective
 I created this tool to quickily test the uptime of my deployments. This is a great tool to be used while testing downtime for DR failovers, pod rollouts, HA system upgrade, Load Balancers and more.
 
-# Help
+## TL;DR
+
+```shell
+% docker run -it gfvirga/httpliveness https://www.google.com -c 4
+Check https://www.google.com (['172.217.12.206']) response: 200
+Check https://www.google.com (['172.217.12.206']) response: 200
+Check https://www.google.com (['172.217.12.206']) response: 200
+Check https://www.google.com (['172.217.12.206']) response: 200
+
+ --- https://www.google.com HTTP requests statistics ---
+4 HTTP requested, 4 200 responses
+```
+
+## Help
+
 ```shell
 $ python3 ./httpliveness.py -h
 usage: httpliveness.py [-h] [-a [ALIAS]] [-c COUNT] [-m METHOD] [-o OUTPUT] [-q [QUIET]] [-t TIMEOUT] [-w WAIT] host
@@ -33,7 +47,7 @@ optional arguments:
   -w WAIT, --wait WAIT  waittime
 ```
 
-# Example
+## Examples
 
 ```shell
 $ python3 ./httpliveness.py https://www.example.com -c 4     
@@ -46,7 +60,7 @@ Check https://www.example.com (['93.184.216.34']) response: 200
 4 HTTP requested, 4 200 responses
 ```
 
-# Example with Alias (CNAME)
+## Example with Alias (CNAME)
 
 ```shell
 $ python3 ./httpliveness.py https://mail.google.com --alias --count 4 --method get

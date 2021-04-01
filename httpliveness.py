@@ -59,9 +59,9 @@ def main( website, alias, wait, quiet, output, method, timeout, count ):
 
 # Parse all the things
 parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('host', help='Enter URL with the patter - http(s)://<website>' )
+parser.add_argument('URL', help='Enter URL with the patter - http(s)://<website>' )
 parser.add_argument('-a', '--alias', action='store', type=bool, nargs='?', const=True, default=False, help="Displays IP or Alias (CNAME)")
-parser.add_argument('-c', '--count', action='store', type=int, default=0, help="count")
+parser.add_argument('-c', '--count', action='store', type=int, default=-1, help="count")
 parser.add_argument('-m', '--method', action='store', type=str, default="head", help="HTTP method [get or head]")
 parser.add_argument('-o', '--output', action='store', type=str, default="text", help="Output [text|json]")
 parser.add_argument('-q', '--quiet', action='store', type=bool, nargs='?', const=True, default=False, help="Reduced Verbosity")
@@ -70,4 +70,4 @@ parser.add_argument('-w', '--wait', action='store', type=float, default=0, help=
 
 args = parser.parse_args()
 
-main( args.host, args.alias , args.wait, args.quiet, args.output, args.method, args.timeout, args.count )
+main( args.URL, args.alias , args.wait, args.quiet, args.output, args.method, args.timeout, args.count )
