@@ -33,7 +33,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -a [ALIAS], --alias [ALIAS]
-                        Displays IP or Alias (CNAME)
+                        Displays Alias (CNAME), instead of IP
   -c COUNT, --count COUNT
                         count
   -m METHOD, --method METHOD
