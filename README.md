@@ -9,7 +9,7 @@ I created this tool to quickily test the uptime of my deployments. This is a gre
 ## TL;DR
 
 ```shell
-% docker run -it gfvirga/httpliveness https://www.google.com -c 4
+% docker run -it --rm gfvirga/httpliveness https://www.google.com -c 4
 Check https://www.google.com (['172.217.12.206']) response: 200
 Check https://www.google.com (['172.217.12.206']) response: 200
 Check https://www.google.com (['172.217.12.206']) response: 200
