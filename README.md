@@ -19,6 +19,9 @@ Check https://www.google.com (['172.217.12.206']) response: 200
 4 HTTP requested, 4 200 responses
 ```
 
+## ASCIInema
+[![asciicast](https://asciinema.org/a/aabo3UvOS2BSIEpj878BlV4wA.svg)](https://asciinema.org/a/aabo3UvOS2BSIEpj878BlV4wA)
+
 ## Help
 
 ```shell
