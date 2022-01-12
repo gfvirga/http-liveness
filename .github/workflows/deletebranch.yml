@@ -6,8 +6,8 @@ on:
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-    name: Build image
+  delete:
+    name: Clean up steps
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: gfvirga/httpliveness
