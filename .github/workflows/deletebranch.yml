@@ -1,0 +1,22 @@
+# This is a basic workflow to help you get started with Actions
+
+name: cleanup-artifacts.
+on:
+  delete
+    
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gfvirga/httpliveness
+      IMAGE_TAGS: latest ${{ github.sha }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Fix Attempt
+      run: |
+        echo "Show all variables for us"
+        env
